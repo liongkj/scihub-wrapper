@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import logging
 import os
+import time
 
 import requests
 import urllib3
@@ -271,11 +272,14 @@ def main():
         sh.set_proxy(args.proxy)
 
     if args.download:
+        start = time.time()
         result = sh.download(args.download, args.output)
         if 'err' in result:
             logger.debug('%s', result['err'])
         else:
-            logger.debug('Successfully downloaded file with identifier %s', args.download)
+            end = time.time()
+
+            logger.debug('Successfully downloaded file with identifier %s in %.2f s', args.download, end - start)
     elif args.search:
         results = sh.search(args.search, args.limit)
         if 'err' in results:
